@@ -22,7 +22,14 @@ from niceTouch import niceTouch
 
 nt = niceTouch.NiceTouch()
 
-nt.scan()
-nt.associateNewDevices()
-nt.calibrateDevices()
-nt.save()
+if __name__ == "__main__":
+    nt.scan()
+    myScreens=["eDP-1-1", "DP-1-1"]
+    myTouchpads=["ELAN Touchscreen", "ILITEK ILITEK-TP"]
+    nt.touchPanels.scanTargets(myTouchpads)
+    for i in range(len(myScreens)):
+        touchpadID = nt.touchPanels.targetDevicesId[myTouchpads[i]]
+        nt.associateDevices(touchpadID, myScreens[i])
+    #nt.associateNewDevices()
+    nt.calibrateDevices()
+    nt.save()

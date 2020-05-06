@@ -24,12 +24,21 @@ class TouchPanels(devices.Devices):
     def __init__(this):
         devices.Devices.__init__(this)
         this.devices = {}
+        this.targetDevicesId = {}
 
     def scan(this):
         for device in this.getDevices():
             if (this.isDeviceATouchPannel(device)):
                 # TODO Handle identifying of the device more intellegently. The same ID isn't necessarily assigned to the same device each time.
                 this.devices[device.deviceID] = device
+
+    def scanTargets(this, targets):
+        detected = this.getDevices()
+        for device in detected:
+            for item in targets:
+                if device.name == item:
+                    this.targetDevicesId[device.name] = device.deviceID
+
 
     def getDevices(this):
         output = []
@@ -57,7 +66,7 @@ class TouchPanels(devices.Devices):
             lineParts = line.split(",")
             
             output.append(TouchPanel(lineParts[1], lineParts[0]))
-        
+
         return output
 
     def isDeviceATouchPannel(this, device):
